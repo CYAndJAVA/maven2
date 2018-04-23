@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tz.mapper.CartMapper">
+    <insert id="saveAddress" parameterType="Address">
+        insert into bsaddress values(bs_addressId.nextval,#{area},
+        #{detailaddress},#{emailcode},#{reciver},#{tel},#{isdefault},#{t_userid})
+    </insert>
+    <select id="findByUId" parameterType="Long" resultType="Address">
+        select * from bsaddress where t_userid=#{v}
+    </select>
+    <update id="updateAddress" parameterType="Address">
+        update bsaddress set 
+        area=#{area},
+        detailaddress=#{detailaddress},
+        emailcode=#{emailcode},
+        reciver=#{reciver},
+        tel=#{tel},
+        isdefault=#{isdefault},
+        t_userid=#{t_userid} where addressid=#{addressid}
+    </update>
+    <select id="findByAid" parameterType="Long" resultType="Address">
+        select * from bsaddress where addressid=#{v}
+    </select>
+    
+    
+    <insert id="insertOrder" parameterType="Order">
+        insert into bsorder values(bs_orderId.nextval,#{ordernum},
+        #{createdate},#{t_userid},#{t_addressid},#{orderstatus})
+    </insert>
+    <select id="findOrderByUserId" parameterType="Long" resultType="Order">
+        select * from bsorder where orderid=#{v}
+    </select>
+    <insert id="insertItem" parameterType="OrderItem">
+        insert into bsitem values(bs_itemId.nextval,#{book_isbn},
+        #{book_name},#{book_author},#{counts},#{newprive},#{allprice},
+        #{cimgurl},#{t_orderid})
+    </insert>
+    <select id="findItemByOrderId" parameterType="Long" resultType="OrderItem">
+        select * from bsitem where itemid=#{v}
+    </select>
+</mapper>

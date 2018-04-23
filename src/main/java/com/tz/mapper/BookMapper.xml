@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tz.mapper.BookMapper">
+     
+   <insert id="insertBook" parameterType="Book">
+        insert into bsbook values(
+         bs_bookId.nextval,#{isbn},#{bookname},#{oldprice}
+        ,#{newprice},#{publisher},#{publish_date},#{suit},#{author}
+        ,#{author_loc},#{bookstyle.style_id},#{info},#{imgurl}
+        )
+   </insert>
+   <!-- 分页查询 -->
+     <select id="findAll" resultType="book">
+        select * from(
+            select rownum row_,core_.* from(
+                select * from bsbook
+        <!-- 可以去除第一个and -->
+        <where>
+            <!-- 进行参数的判断 -->
+            <if test="bookName!=null">
+                bookname like '%'||#{bookName}||'%'
+            </if>   
+            
+            <!-- 判断图书类型的id是否传入 -->
+            <if test="styleId!=null and styleId!=-1">
+                and bookstyle = #{styleId}
+            </if>
+        </where>) core_ where rownum&lt;=#{pageNow}*#{pageSize}) out_ where out_.row_>(#{pageNow}-1)*#{pageSize}
+    </select>
+    
+    <!-- 查询根据条件出来的数据的个数 -->
+    <select id="getRows" resultType="int">
+        select count(*) from bsbook
+        <where>
+            <!-- 进行参数的判断 -->
+            <if test="bookName!=null">
+                bookname like '%'||#{bookName}||'%'
+            </if>   
+            <!-- 判断图书类型的id是否传入 -->
+            <if test="styleId!=null and styleId!=-1">
+                and bookstyle = #{styleId}
+            </if>
+        </where>
+    </select>
+    
+    <resultMap type="book" id="getMap">
+        <id property="bookid" column="bookid"/>
+        <result property="isbn" column="isbn"/>
+        <result property="bookname" column="bookname"/>
+        <result property="oldprice" column="oldprice"/>
+        <result property="newprice" column="newprice"/>
+        <result property="publisher" column="publisher"/>
+        <result property="publish_date" column="publish_date"/>
+        <result property="suit" column="suit"/>
+        <result property="author" column="author"/>
+        <result property="author_loc" column="author_loc"/>
+        <result property="info" column="info"/>
+        <result property="imgurl" column="imgurl"/>
+        <association property="bookstyle" javaType="BookStyle">
+            <id property="style_id" column="style_id"/>
+            <result property="stylename" column="stylename"/>
+        </association>
+    </resultMap>
+    <select id="getById" parameterType="int" resultMap="getMap">
+        select b.*,s.style_id,s.stylename from bsbook b 
+        join bsstyle s on b.bookstyle= s.style_id
+        where b.bookid=#{value}
+    </select>
+    <select id="getByIbsn" parameterType="string" resultMap="getMap">
+        select b.*,s.style_id,s.stylename from bsbook b 
+        join bsstyle s on b.bookstyle= s.style_id
+        where b.isbn=#{value}
+    </select>
+   
+
+</mapper>

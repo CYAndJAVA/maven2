@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
+<configuration>
+
+	<!-- 需要引入外部的.properties文件 -->
+	<properties resource="dbConfig.properties"></properties>
+	
+	<!-- 设置 -->
+   <settings>
+		<setting name="jdbcTypeForNull" value="NULL"/>
+   </settings>
+
+	<!-- 设置别名 -->
+	<typeAliases>
+		<package name="com.tz.entity"/>
+	</typeAliases>
+	<!-- 枚举 -->
+	<typeHandlers>
+        <typeHandler handler="org.apache.ibatis.type.EnumOrdinalTypeHandler"
+             javaType="com.tz.entity.eum.Category"/>
+        <typeHandler handler="org.apache.ibatis.type.EnumOrdinalTypeHandler"
+             javaType="com.tz.entity.eum.OrderStatus"/>
+        <typeHandler handler="org.apache.ibatis.type.EnumOrdinalTypeHandler"
+             javaType="com.tz.entity.eum.Suit"/>
+    </typeHandlers>
+	
+
+	<environments default="development">
+		<!-- 此处的id的值都是唯一的 -->
+		<environment id="development">
+			<transactionManager type="JDBC"></transactionManager>
+			<dataSource type="POOLED">
+				<property name="driver" value="${driverClass}"/>
+				<property name="url" value="${url}"/>
+				<property name="username" value="${user}"/>
+				<property name="password" value="${password}"/> 
+			</dataSource>
+		</environment>	
+	</environments>
+	
+	<!-- 添加映射文件 -->
+	<mappers>
+		<package name="com.tz.mapper"/>
+	</mappers>
+</configuration>

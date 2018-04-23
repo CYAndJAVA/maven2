@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tz.mapper.UserMapper">
+    <!-- 通过账户查询 -->
+    <select id="findByName" parameterType="String" resultType="User">
+        select * from bsuser where username = #{name}
+    </select>
+    <!-- 插入数据 -->
+    <insert id="insertUser" parameterType="User">
+        insert into bsuser values(bs_userId.nextval,#{userName},
+        #{passWord},#{email},#{phone},#{company},#{address})
+    </insert>
+    <!-- 更新数据 -->
+    <update id="updateUser" parameterType="User">
+        update bsuser set 
+        username=#{userName},
+        password=#{passWord},
+        email=#{email},
+        phone=#{phone},
+        company=#{company},
+        address=#{address} where userid=#{userId}
+    </update>
+    <!-- 通过账户名删除数据 -->
+    <delete id="deleteUserByname" parameterType="String">
+        delete from bsuser where username=#{username}
+    </delete>
+</mapper>

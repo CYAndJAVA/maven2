@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tz.mapper.BookStyleMapper">
+<insert id="insertStyle" parameterType="string">
+    insert into bsstyle values(bs_StyleId.nextval,#{stylename})
+</insert>
+
+<select id="findStyleIdByName" resultType="Long" parameterType="string">
+    select style_id from bsstyle where stylename=#{v}
+</select>
+<select id="findStyleNameById" resultType="string" parameterType="Integer">
+    select stylename from bsstyle where style_id=#{v}
+</select>
+
+<select id="findAllStyle" resultType="BookStyle">
+    select * from bsstyle
+</select>
+
+</mapper>
